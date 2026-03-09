@@ -3,8 +3,12 @@ const express = require("express");
 const cheerio = require("cheerio");
 const axios = require("axios");
 const app = express();
+const cors = require("cors");
 
 const siteURL = process.env.SITE_URL;
+
+app.use(cors());
+app.use(express.json());
 
 const extractNepseData = async () => {
     try {

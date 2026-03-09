@@ -1,50 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import getData from "../services/api";
 
-const TableCard = () => {
-  const users = [
-    {
-      name: "Lindsay Walton",
-      title: "Front-end Developer",
-      email: "lindsay.walton@example.com",
-      role: "Member",
-    },
-    {
-      name: "Courtney Henry",
-      title: "Designer",
-      email: "courtney.henry@example.com",
-      role: "Admin",
-    },
-    {
-      name: "Tom Cook",
-      title: "Director of Product",
-      email: "tom.cook@example.com",
-      role: "Member",
-    },
-    {
-      name: "Whitney Francis",
-      title: "Copywriter",
-      email: "whitney.francis@example.com",
-      role: "Admin",
-    },
-    {
-      name: "Leonard Krasner",
-      title: "Senior Designer",
-      email: "leonard.krasner@example.com",
-      role: "Owner",
-    },
-    {
-      name: "Floyd Miles",
-      title: "Principal Designer",
-      email: "floyd.miles@example.com",
-      role: "Member",
-    },
-  ];
+const TableCard = ({ search }) => {
+  const [value, setValue] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getData();
+        setValue(data);
+      } catch (error) {
+        console.error("Data fetching failed...", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-  return (
-    <div className="p-8">
-      <div className="overflow-hidden rounded-xl border border-gray-700">
+  const fileteredData = value.filter((item) =>
+    item.scrip.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const loadingDiv = (
+    <div className="flex flex-col items-center justify-center h-64 space-y-4">
+      <div className="relative">
+        <div className="w-12 h-12 rounded-full border-4 border-sky-500/20 border-t-sky-500 animate-spin"></div>
+        <div className="absolute inset-0 w-12 h-12 rounded-full blur-md border-4 border-transparent border-t-sky-400 animate-spin"></div>
+      </div>
+      <p className="text-sky-400 font-mono text-sm tracking-widest uppercase animate-pulse">
+        Loading Market Data...
+      </p>
+    </div>
+  );
+
+  return loading ? (
+    loadingDiv
+  ) : (
+    <div className="p-8 w-full max-w-7xl mx-auto">
+      <div className="rounded-xl border border-gray-700 ">
         <table className="min-w-full divide-y divide-gray-700 bg-slate-900 text-white">
-          <thead className="bg-slate-800 uppercase">
+          <thead className="bg-slate-800 uppercase sticky top-0 z-10">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-semibold">
                 Scrip
@@ -53,7 +49,7 @@ const TableCard = () => {
               <th className="px-6 py-3 text-left text-sm font-semibold">
                 Delta
               </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
+              <th className="px-6 py-3 text-center text-sm font-semibold">
                 Percent Change
               </th>
               <th className="px-6 py-3 text-left text-sm font-semibold">
@@ -66,18 +62,19 @@ const TableCard = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-700">
-            {users.map((user, index) => (
+            {fileteredData.map((scrip, index) => (
               <tr key={index} className="hover:bg-slate-800">
-                <td className="px-6 py-4 font-medium">{user.name}</td>
-                <td className="px-6 py-4">{user.title}</td>
-                <td className="px-6 py-4 text-gray-300">{user.email}</td>
-                <td className="px-6 py-4">{user.role}</td>
-                <td className="px-6 py-4 text-right">
-                  <button className="text-indigo-400 hover:text-indigo-300">
-                    Edit
-                  </button>
+                <td className="px-6 py-4 font-medium">{scrip.scrip}</td>
+                <td className="px-6 py-4">{scrip.ltp}</td>
+                <td className="px-6 py-4">
+                  {Number(scrip.high - scrip.low) > 0 ? "green" : "red"}
                 </td>
-                <td className="px-6 py-4">{user.role}</td>
+                <td className="px-6 py-4 text-center">
+                  {scrip.percent_change}
+                </td>
+                <td className="px-6 py-4">{scrip.high}</td>
+                <td className="px-6 py-4">{scrip.low}</td>
+                <td className="px-6 py-4">{scrip.qty}</td>
               </tr>
             ))}
           </tbody>
