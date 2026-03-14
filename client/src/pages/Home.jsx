@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import TableCard from "../components/TableCard";
+import TrackButton from "../components/TrackButton";
 
 const Home = () => {
   const [search, setSearch] = useState("");
   return (
     <>
       <div className="flex flex-col min-h-screen w-full items-center pt-20">
-        <SearchBar setSearch={setSearch} />
+        <div className="flex items-center justify-center w-3xl">
+          <SearchBar setSearch={setSearch} />
+          <TrackButton />
+        </div>
         <TableCard search={search} />
       </div>
     </>

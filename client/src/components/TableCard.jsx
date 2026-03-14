@@ -25,10 +25,10 @@ const TableCard = ({ search }) => {
   const loadingDiv = (
     <div className="flex flex-col items-center justify-center h-64 space-y-4">
       <div className="relative">
-        <div className="w-12 h-12 rounded-full border-4 border-sky-500/20 border-t-sky-500 animate-spin"></div>
-        <div className="absolute inset-0 w-12 h-12 rounded-full blur-md border-4 border-transparent border-t-sky-400 animate-spin"></div>
+        <div className="w-12 h-12 rounded-full border-4 border-teal-500/20 border-t-teal-500 animate-spin"></div>
+        <div className="absolute inset-0 w-12 h-12 rounded-full blur-md border-4 border-transparent border-t-teal-400 animate-spin"></div>
       </div>
-      <p className="text-sky-400 font-mono text-sm tracking-widest uppercase animate-pulse">
+      <p className="text-teal-400 font-mono text-sm tracking-widest uppercase animate-pulse">
         Loading Market Data...
       </p>
     </div>
@@ -75,6 +75,13 @@ const TableCard = ({ search }) => {
                 <td className="px-6 py-4">{scrip.high}</td>
                 <td className="px-6 py-4">{scrip.low}</td>
                 <td className="px-6 py-4">{scrip.qty}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    name="select"
+                    className="h-4 w-4 rounded border-none bg-gray-200 accent-teal-600 focus:ring-0 focus:ring-offset-0"
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
