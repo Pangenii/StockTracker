@@ -87,8 +87,8 @@ const verifyEmail = async (req, res) => {
         const { accessToken, refreshToken } = await generateToken(user);
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax"
+            secure: true,
+            sameSite: "none"
         })
         res.json({
             success: true,
@@ -156,8 +156,8 @@ const login = async (req, res) => {
         // SET REFRESH TOKEN COOKIE
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict"
+            secure: true,
+            sameSite: "none"
         });
 
         res.json({

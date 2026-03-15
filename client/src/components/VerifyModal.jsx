@@ -30,7 +30,7 @@ const VerifyModal = ({ status, email, buttonText, onVerify }) => {
         </div>
 
         <button
-          className="w-full bg-teal-500 hover:bg-teal-400 text-neutral-900 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest transition-colors shadow-lg shadow-teal-500/20 active:scale-[0.98]"
+          className="w-full bg-teal-500 hover:bg-teal-400 text-white py-4 rounded-2xl font-bold text-sm uppercase tracking-widest transition-colors shadow-lg shadow-teal-500/20 active:scale-[0.98]"
           onClick={handleSubmit}
         >
           {buttonText}
