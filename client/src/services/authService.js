@@ -7,3 +7,7 @@ export const registerUser = (data) => {
 export const loginUser = (data) => {
     return API.post("/auth/login", data);
 }
+
+export const verifyUser = (data) => {
+    return API.post("/auth/verifyOTP", data);
+}
