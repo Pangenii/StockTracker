@@ -4,7 +4,6 @@ const User = require("../models/user.model");
 const cleanUnverifiedUser = () => {
     cron.schedule("0 * * * *", async () => {
         try {
-            logger.info("cron job is running!")
             const result = await User.deleteMany({
                 isVerified: false,
                 createdAt: {
