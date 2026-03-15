@@ -26,7 +26,7 @@ const register = async (req, res) => {
                 message: "User with this credentials is already registered."
             })
         }
-        user = new User({ username, email, password, isVerified, verificationToken });
+        user = new User({ username, email, password });
         await user.save();
         logger.info("User registered successfully.")
 
@@ -87,10 +87,18 @@ const login = async (req, res) => {
 
         const { accessToken, refreshToken } = await generateToken(user);
 
+        // SET REFRESH TOKEN COOKIE
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict"
+        });
+
         res.json({
             success: true,
+            message: "Login Successful !",
             accessToken,
-            refreshToken
+            username: user.username
         });
 
     } catch (error) {

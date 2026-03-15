@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const errorHandler = require("./middlewares/errorHandler")
 const connectDB = require("../config/connectToDB");
 const authRouter = require("./routes/user")
+const cookieParser = require("cookie-parser")
 
 const siteURL = process.env.SITE_URL;
 const PORT = process.env.PORT;
@@ -16,7 +17,14 @@ connectDB(process.env.MONGO_URI);
 
 //middlewares
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
+
+// Parse cookies
+app.use(cookieParser());
+
 app.use(express.json());
 
 

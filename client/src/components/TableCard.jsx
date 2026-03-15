@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import getData from "../services/api";
+import getData from "../services/scrapeService";
 
 const TableCard = ({ search }) => {
   const [value, setValue] = useState([]);
