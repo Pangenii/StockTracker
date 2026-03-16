@@ -1,13 +1,13 @@
 import API from "../api/axios";
 
 export const registerUser = (data) => {
-    return API.post("/auth/register", data);
+    return API.post("/api/auth/register", data);
 }
 
 export const loginUser = (data) => {
-    return API.post("/auth/login", data);
+    return API.post("/api/auth/login", data);
 }
 
 export const verifyUser = (data) => {
-    return API.post("/auth/verifyOTP", data);
+    return API.post("/api/auth/verifyOTP", data);
 }
