@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser, verifyUser } from "../services/authService";
 import { toast } from "react-toastify";
-import VerifyModal from "../components/verifyModal";
+import VerifyModal from "../components/VerifyModal";
 
 const Register = () => {
   const navigate = useNavigate();
