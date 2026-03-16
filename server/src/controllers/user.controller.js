@@ -31,11 +31,7 @@ const register = async (req, res) => {
         user = new User({ username, email, password, verificationToken: otp, verificationTokenExpires: Date.now() + 10 * 60 * 1000 });
         await user.save();
 
-        await sendEmail(
-            email,
-            "Verify your email",
-            `Your verification code is ${otp}`
-        )
+        await sendEmail(email, "Verify your email", otp);
         logger.info("Email sent successfully ")
 
 

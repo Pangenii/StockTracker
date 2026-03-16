@@ -1,58 +1,69 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    dnsLookup: (hostname, options, callback) => {
-        const dns = require('dns');
-        dns.lookup(hostname, { family: 4 }, callback);
-    },
-    debug: true,
-    logger: true
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (to, subject, otp) => {
     const htmlContent = `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
-        <div style="background-color: #2563eb; padding: 20px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">StockTracker</h1>
-        </div>
-        <div style="padding: 30px; color: #333333; line-height: 1.6;">
-            <h2 style="color: #1f2937;">Verify your email</h2>
-            <p>Hi there,</p>
-            <p>Thank you for joining StockTracker. To complete your registration, please use the verification code below:</p>
-            <div style="text-align: center; margin: 30px 0;">
-                <span style="display: inline-block; padding: 12px 24px; background-color: #f3f4f6; border-radius: 4px; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #2563eb; border: 1px dashed #2563eb;">
-                    ${otp}
-                </span>
-            </div>
-            <p>This code will expire in 10 minutes. If you did not request this, please ignore this email.</p>
-            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 30px 0;">
-            <p style="font-size: 12px; color: #6b7280; text-align: center;">
-                © 2026 StockTracker. All rights reserved.<br> Nepal
-            </p>
-        </div>
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f3f4f6; padding:40px 10px;">
+  <div style="max-width:600px; margin:auto; background:white; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
+    
+    <!-- Header -->
+    <div style="background:#2f61d5; padding:20px; text-align:center;">
+      <h1 style="color:white; margin:0; font-size:24px;">StockTracker</h1>
     </div>
-    `;
 
-    try {
-        await transporter.sendMail({
-            from: `"StockTracker" <${process.env.EMAIL_USER}>`,
-            to,
-            subject,
-            text: `Your verification code is ${otp}`,
-            html: htmlContent
-        });
-    } catch (error) {
-        console.error("Nodemailer Error Details:", error);
-        throw error; // Re-throw so your controller catches it
-    }
+    <!-- Body -->
+    <div style="padding:30px; color:#374151;">
+      <h2 style="margin-top:0;">Verify your email</h2>
+
+      <p>Hi there,</p>
+
+      <p>
+        Thank you for joining StockTracker. To complete your registration,
+        please use the verification code below:
+      </p>
+
+      <!-- OTP BOX -->
+      <div style="margin:30px 0; text-align:center;">
+        <div style="
+          display:inline-block;
+          padding:20px 30px;
+          border:2px dashed #3b82f6;
+          border-radius:6px;
+          font-size:30px;
+          letter-spacing:8px;
+          font-weight:bold;
+          color:#2f61d5;
+          background:#f9fafb;
+        ">
+          ${otp}
+        </div>
+      </div>
+
+      <p>
+        This code will expire in <b>10 minutes</b>. If you did not request this,
+        please ignore this email.
+      </p>
+
+      <hr style="border:none; border-top:1px solid #e5e7eb; margin:30px 0;" />
+
+      <!-- Footer -->
+      <p style="font-size:12px; color:#6b7280; text-align:center;">
+        © 2026 StockTracker. All rights reserved.<br/>
+        Nepal
+      </p>
+
+    </div>
+  </div>
+</div>
+`;
+
+    await resend.emails.send({
+        from: "StockTracker <onboarding@resend.dev>",
+        to: to,
+        subject: subject,
+        html: htmlContent,
+    });
 };
 
 module.exports = sendEmail;
