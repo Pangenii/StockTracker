@@ -12,6 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleVerify = async ({ email, otp }) => {
     try {
@@ -29,7 +30,7 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const res = await registerUser({ username, email, password });
 
@@ -46,6 +47,8 @@ const Register = () => {
       }
 
       toast.error(message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,9 +110,10 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold"
+              disabled={loading}
+              className={`w-full py-3 rounded-lg bg-teal-600 font-semibold text-white transition-colors  ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-teal-700"}`}
             >
-              Register
+              {loading ? "Registering..." : "Register"}
             </button>
           </form>
         </div>
