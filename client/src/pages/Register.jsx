@@ -37,12 +37,15 @@ const Register = () => {
 
       setShowVerifyModal(true);
     } catch (error) {
-      console.error(error.response?.data);
+      const status = error.response?.status;
+      const message = error.response?.data?.message;
 
-      toast.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again.",
-      );
+      if (status === 409 && message?.toLowerCase().includes("not verified")) {
+        setShowVerifyModal(true);
+        return;
+      }
+
+      toast.error(message || "Registration failed. Please try again.");
     }
   };
 
