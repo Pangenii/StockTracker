@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <Navbar />
       <div className="flex flex-col min-h-screen w-full items-center pt-20">
-        <div className="flex items-center justify-center w-3xl">
+        <div className="flex items-center justify-center w-full max-w-3xl px-4">
           <SearchBar setSearch={setSearch} />
           <TrackButton />
         </div>

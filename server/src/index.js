@@ -44,9 +44,16 @@ app.use(express.json());
 
 app.use(globalLimiter);
 
+let cachedData = null;
+let lastFetchTime = 0;
 
 const extractNepseData = async () => {
     try {
+        const now = Date.now();
+
+        if (cachedData && now - lastFetchTime < 180000) {
+            return cachedData;
+        }
         const keys = [
             "scrip",
             "ltp",
@@ -72,6 +79,8 @@ const extractNepseData = async () => {
             })
             nepseData.push(marketData);
         })
+        cachedData = nepseData;
+        lastFetchTime = now;
         return nepseData
     } catch (error) {
         console.error(error)

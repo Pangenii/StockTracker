@@ -2,7 +2,7 @@ import React from "react";
 
 const SearchBar = ({ setSearch }) => {
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md sm:max-w-lg">
       <input
         type="text"
         placeholder="Search..."
