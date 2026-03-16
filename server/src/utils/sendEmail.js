@@ -41,13 +41,18 @@ const sendEmail = async (to, subject, otp) => {
     </div>
     `;
 
-    await transporter.sendMail({
-        from: `"StockTracker Support" <${process.env.EMAIL_USER}>`,
-        to,
-        subject,
-        text: `Your verification code is ${otp}`,
-        html: htmlContent
-    });
+    try {
+        await transporter.sendMail({
+            from: `"StockTracker" <${process.env.EMAIL_USER}>`,
+            to,
+            subject,
+            text: `Your verification code is ${otp}`,
+            html: htmlContent
+        });
+    } catch (error) {
+        console.error("Nodemailer Error Details:", error);
+        throw error; // Re-throw so your controller catches it
+    }
 };
 
 module.exports = sendEmail;
