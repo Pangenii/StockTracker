@@ -8,7 +8,13 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-    }
+    },
+    dnsLookup: (hostname, options, callback) => {
+        const dns = require('dns');
+        dns.lookup(hostname, { family: 4 }, callback);
+    },
+    debug: true,
+    logger: true
 });
 
 const sendEmail = async (to, subject, otp) => {
