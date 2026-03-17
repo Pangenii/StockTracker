@@ -29,8 +29,7 @@ const Guide = () => {
             <div className="rounded-xl overflow-hidden border border-teal-800 shadow-xl">
               <div className="aspect-video">
                 <iframe
-                  src="https://www.loom.com/embed/YOUR_VIDEO_ID"
-                  frameBorder="0"
+                  src="https://www.loom.com/share/89ad50f72a7d45bba7e3a89c73ad5d75"
                   allowFullScreen
                   className="w-full h-full"
                 ></iframe>
